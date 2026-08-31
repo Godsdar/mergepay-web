@@ -10,6 +10,8 @@ import type {
   CreateSettlementRequest,
   ExpenseResponse,
   SettlementIntentResponse,
+  BalancesResponse,
+  Settlement,
 } from "@/lib/types";
 
 export function useCreateExpenseMutation(groupId: string) {
@@ -86,6 +88,7 @@ export function useSettleBalanceMutation(groupId: string) {
     },
     onSettled: () => {
       invalidate(expenseCacheKeys(groupId));
+      qc.invalidateQueries({ queryKey: qk.balances(groupId) });
       qc.invalidateQueries({ queryKey: qk.activity(groupId) });
       qc.invalidateQueries({ queryKey: qk.history });
     },
